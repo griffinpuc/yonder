@@ -1,5 +1,6 @@
 package griffin.github.wayward;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -23,12 +24,16 @@ public class Commands implements CommandExecutor {
         dataFolder = dataFolder;
     }
 
+    public String formatMessage(String input){
+        return(ChatColor.LIGHT_PURPLE + "[Yonder] " + input);
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         Player player = (Player) sender;
 
-        if(label.equalsIgnoreCase("ww")){
+        if(label.equalsIgnoreCase("yonder")){
 
             if(args.length == 0){
 
@@ -52,23 +57,25 @@ public class Commands implements CommandExecutor {
                     writer.close();
                 }
                 catch(java.io.IOException e){
-                    sender.sendMessage("[WW] Error saving data. Try again.");
+                    sender.sendMessage(formatMessage("Critical plugin error."));
                     sender.sendMessage(e.getMessage());
                 }
 
-                sender.sendMessage("[WW] Waypoint " + pointLabel + " created.");
+                sender.sendMessage(formatMessage("Waypoint " + pointLabel + " created."));
 
-
+                return true;
             }
 
             else if(args[0].equalsIgnoreCase("list")){
-                String returnList = "[WW] Available waypoints";
+                String returnList = formatMessage("Available waypoints: ");
 
                 for(File file : new File("plugins/wayward/").listFiles()){
                     returnList = returnList + ", " + file.getName();
                 }
 
                 sender.sendMessage(returnList);
+
+                return true;
             }
 
             else if(args[0].equalsIgnoreCase("go")){
@@ -87,14 +94,15 @@ public class Commands implements CommandExecutor {
                                     }
                                 }
                                 catch (java.io.IOException e) {
-                                    sender.sendMessage("[WW] Critical plugin error.");
+                                    sender.sendMessage(formatMessage("Critical plugin error."));
                                     sender.sendMessage(e.getMessage());
                                 }
 
                                 Location foundLocation = new Location(player.getWorld(), coordsList.get(0), coordsList.get(1), coordsList.get(2));
                                 player.setCompassTarget(foundLocation);
+                                sender.sendMessage(formatMessage("Started navigating to " + args[1]));
 
-                                break;
+                                return true;
                             }
                         }
                     }
@@ -102,7 +110,7 @@ public class Commands implements CommandExecutor {
                     break;
                 }
 
-                //sender.sendMessage("[WW] No compass found in inventory. Get one and try again.");
+                sender.sendMessage("[WW] No compass found in inventory. Get one and try again.");
 
 
             }

@@ -12,7 +12,7 @@ public class Wayward extends JavaPlugin{
         if(!path.exists())
             path.mkdir();
 
-        this.getCommand("ww").setExecutor(new Commands(path));
+        this.getCommand("yonder").setExecutor(new Commands(path));
 
     }
 
