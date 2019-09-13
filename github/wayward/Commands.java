@@ -37,7 +37,7 @@ public class Commands implements CommandExecutor {
 
             if(args.length == 0){
 
-                sender.sendMessage("cheers");
+                sender.sendMessage("Usage here eventually");
 
             }
 
@@ -64,6 +64,18 @@ public class Commands implements CommandExecutor {
                 sender.sendMessage(formatMessage("Waypoint " + pointLabel + " created."));
 
                 return true;
+            }
+
+            else if(args[0].equalsIgnoreCase("delete")){
+                for(File file : new File("plugins/wayward/").listFiles()){
+                    if(file.getName().equalsIgnoreCase(args[1])){
+                        if(file.delete()){
+                            sender.sendMessage(formatMessage("Removed waypoint" + args[1]));
+
+                            return true;
+                        }
+                    }
+                }
             }
 
             else if(args[0].equalsIgnoreCase("list")){
